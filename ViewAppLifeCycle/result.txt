@@ -1,0 +1,52 @@
+Before Scene Delegate Added
+// App run
+will Finishing Launching With Options
+did Finishing Launching With Options
+application Did Become Active
+view Did Load
+view Will Appear
+view Did Appear
+
+// Move to second viewController
+view Will Disappear
+view Did Disappear
+
+// Move to first viewController
+view Will Appear
+view Did Appear
+
+// Press home button
+application Will Resign Active
+application Did Enter Background
+
+// Tap on app
+application Will Enter Foreground
+application Did Become Active
+
+
+
+After Scene Delegate Added
+// App run
+will Finishing Launching With Options
+did Finishing Launching With Options
+sceneWillEnterForeground
+sceneDidBecomeActive
+view Did Load
+view Will Appear
+view Did Appear
+
+// Move to second viewController
+view Will Disappear
+view Did Disappear
+
+// Move to first viewController
+view Will Appear
+view Did Appear
+
+// App swipe up
+sceneWillResignActive
+sceneDidEnterBackground
+
+// Tap on app
+sceneWillEnterForeground
+sceneDidBecomeActive
