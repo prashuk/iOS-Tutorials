@@ -30,7 +30,6 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.imageView.image = UIImage(data: data)
                 }
-                
             }
         }).resume()
     }

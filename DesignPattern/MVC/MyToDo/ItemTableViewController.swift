@@ -103,7 +103,6 @@ class ItemTableViewController: UITableViewController {
     //MARK: fetch data from user defaults
     //10
     func fetchData() {
-        
         if let list = defaults.value(forKey: "encodedList") as? [[String: Any]] {
             
             for item in list {
@@ -124,7 +123,7 @@ class ItemTableViewController: UITableViewController {
             encodedList.append(item.toPropertyList())
         }
 
-        defaults.set(encodedList, forKey: "encodedList")
+        defaults.setValue(encodedList, forKey: "encodedList")
     }
     
 }

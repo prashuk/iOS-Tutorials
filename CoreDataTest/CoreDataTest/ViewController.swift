@@ -119,7 +119,7 @@ class ViewController: UITableViewController {
     }
     
     func fetchPerson() {
-        let request = Person.fetchRequest() as NSFetchRequest<Person>
+        let request = Person.fetchRequest() as NSFetchRequest
         
 //        let pred = NSPredicate(format: "name CONTAINS %@", "Prashuk")
 //        request.predicate = pred
