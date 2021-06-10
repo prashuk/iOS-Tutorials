@@ -7,24 +7,27 @@
 
 import Foundation
 
-class EmployeeViewModel: NSObject {
+class EmployeeViewModel {
     
-    private var apiService = APIService()
+    private var apiService: APIService
     
-    var employee = [EmployeeData]()
-        
-    override init() {
-        super.init()
+    private(set) var empData : Employee! {
+        didSet {
+            self.bindEmployeeViewModelToController()
+        }
+    }
+    
+    var bindEmployeeViewModelToController : (() -> ()) = {}
+            
+    init() {
+        self.apiService = APIService()
         self.callFuncToGetEmpData()
     }
     
     func callFuncToGetEmpData() {
         self.apiService.apiToGetEmployee { [weak self] (empData) in
-            for item in empData.data {
-                self?.employee.append(item)
-            }
-            
-            // Dispatch.main.async {} if we are not following MVVM pattern
+            guard let self = self else { return }
+            self.empData = empData
         }
     }
 }

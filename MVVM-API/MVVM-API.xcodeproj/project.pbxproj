@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE682AAC2672902C00C8B0C6 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE682AAB2672902C00C8B0C6 /* Constant.swift */; };
 		FE9B253F2586E91D00532B22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9B253E2586E91D00532B22 /* AppDelegate.swift */; };
 		FE9B25412586E91D00532B22 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9B25402586E91D00532B22 /* SceneDelegate.swift */; };
 		FE9B25462586E91D00532B22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE9B25442586E91D00532B22 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FE682AAB2672902C00C8B0C6 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		FE9B253B2586E91D00532B22 /* MVVM-API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MVVM-API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE9B253E2586E91D00532B22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE9B25402586E91D00532B22 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				FE9B25492586E91F00532B22 /* LaunchScreen.storyboard */,
 				FE9B25472586E91F00532B22 /* Assets.xcassets */,
 				FE9B254C2586E91F00532B22 /* Info.plist */,
+				FE682AAB2672902C00C8B0C6 /* Constant.swift */,
 			);
 			path = "MVVM-API";
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE682AAC2672902C00C8B0C6 /* Constant.swift in Sources */,
 				FE9B25772586E99300532B22 /* Employee.swift in Sources */,
 				FE9B253F2586E91D00532B22 /* AppDelegate.swift in Sources */,
 				FE9B257F2586E9AB00532B22 /* EmployeeViewModel.swift in Sources */,

@@ -3,24 +3,27 @@
 //  MVVM-API
 //
 //  Created by Prashuk Ajmera on 12/13/20.
-//
 
 import Foundation
 
-struct Employee: Decodable {
-    let status: String
+// https://app.quicktype.io/
+
+// MARK: - Employee
+struct Employee: Codable {
     let data: [EmployeeData]
+    let total, page, limit, offset: Int
 }
 
-struct EmployeeData: Decodable {
-    let id, employeeName, employeeSalary, employeeAge: String
-    let profileImage: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case employeeName = "employee_name"
-        case employeeSalary = "employee_salary"
-        case employeeAge = "employee_age"
-        case profileImage = "profile_image"
-    }
+// MARK: - EmployeeData
+struct EmployeeData: Codable {
+    let id, lastName, firstName, email: String
+    let title: Title
+    let picture: String
+}
+
+enum Title: String, Codable {
+    case miss = "miss"
+    case mr = "mr"
+    case mrs = "mrs"
+    case ms = "ms"
 }
