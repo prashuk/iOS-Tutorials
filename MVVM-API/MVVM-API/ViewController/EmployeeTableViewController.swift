@@ -38,7 +38,7 @@ extension EmployeeTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let item = self.employees[indexPath.row]
         cell.imageView?.imageFromServerURL(url: item.picture, PlaceHolderImage: UIImage(systemName: "person.circle")!)
-        cell.textLabel?.text = item.firstName + " " + item.lastName
+        cell.textLabel?.text = item.title.rawValue.capitalizingFirstLetter() + ". " + item.firstName + " " + item.lastName
         cell.detailTextLabel?.text = item.email
         return cell
     }
@@ -66,5 +66,11 @@ extension UIImageView {
                 self.image = image
             })
         }.resume()
+    }
+}
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
     }
 }

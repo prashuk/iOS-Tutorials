@@ -7,9 +7,9 @@
 
 import Foundation
 
-class EmployeeViewModel {
+class EmployeeViewModel: NSObject {
     
-    private var apiService: APIService
+    private var apiService = APIService()
     
     private(set) var empData : Employee! {
         didSet {
@@ -19,8 +19,8 @@ class EmployeeViewModel {
     
     var bindEmployeeViewModelToController : (() -> ()) = {}
             
-    init() {
-        self.apiService = APIService()
+    override init() {
+        super.init()
         self.callFuncToGetEmpData()
     }
     

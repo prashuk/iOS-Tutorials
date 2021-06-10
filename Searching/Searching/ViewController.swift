@@ -8,11 +8,14 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let viewModel = ViewModel()
 
     var tableView: UITableView!
     var searchController: UISearchController!
-    var data: [String] = ["Prashuk", "Ajmera", "Shraddha", "Singh"]
-    var dataFilter: [String] = []
+    
+    var data = [EmployeeData]()
+    var dataFilter: [EmployeeData] = []
     
     var isSearchBarEmpty: Bool {
         searchController.searchBar.text?.isEmpty ?? true
@@ -24,6 +27,13 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.viewModel.binding = {
+            self.data = self.viewModel.empData.data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
         
         self.title = "Search"
         
@@ -58,13 +68,17 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
         if isFilter {
-            cell?.textLabel?.text = self.dataFilter[indexPath.row]
+            let item = self.dataFilter[indexPath.row]
+            cell.textLabel?.text = item.firstName + " " + item.lastName
+            cell.detailTextLabel?.text = item.email
         } else {
-            cell?.textLabel?.text = self.data[indexPath.row]
+            let item = self.data[indexPath.row]
+            cell.textLabel?.text = item.firstName + " " + item.lastName
+            cell.detailTextLabel?.text = item.email
         }
-        return cell!
+        return cell
     }
 }
 
@@ -76,7 +90,7 @@ extension ViewController: UISearchResultsUpdating {
     
     func filterContentForSearch(searchText: String) {
         dataFilter = data.filter({ (data) -> Bool in
-            return data.lowercased().contains(searchText.lowercased())
+            return data.firstName.lowercased().contains(searchText.lowercased())
         })
         
         tableView.reloadData()
