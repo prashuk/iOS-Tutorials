@@ -18,6 +18,8 @@ class ViewController: UIViewController {
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Identify Yourself") { [weak self] (success, error) in
+                guard let _ = self else { return }
+                
                 DispatchQueue.main.async {
                     if success {
                         print("Authenticated")
