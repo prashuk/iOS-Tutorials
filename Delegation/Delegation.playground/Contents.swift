@@ -1,13 +1,13 @@
 import UIKit
 
-protocol RatingPickerDelegate {
+protocol RatingPickerDelegate: AnyObject {
     func preferredRatingSymbol(picker: RatingPicker) -> UIImage?
     func didSelectRating(picker: RatingPicker, rating: Int)
     func didCancel(picker: RatingPicker)
 }
 
 class RatingPicker {
-    var delegate: RatingPickerDelegate?
+    weak var delegate: RatingPickerDelegate?
     
     init(withDelegate delegate: RatingPickerDelegate?) {
         self.delegate = delegate
