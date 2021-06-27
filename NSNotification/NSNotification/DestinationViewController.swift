@@ -17,10 +17,12 @@ class DestinationViewController: UIViewController {
     
     @IBAction func mumbaiBtn(_ sender: Any) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Mumbai"), object: nil)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func bangaloreBtn(_ sender: Any) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Dehli"), object: nil)
+        navigationController?.popToRootViewController(animated: true)
     }
     
 }
