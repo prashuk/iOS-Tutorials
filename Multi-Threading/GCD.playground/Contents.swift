@@ -25,26 +25,26 @@ func simpleQueues() {
     // Custom Queue
     let queue = DispatchQueue(label: "com.prashuk.myqueue")
     
-    // Sync Thread -- high priority
-    //    queue.sync {
-    //        for i in 50..<60 {
-    //            print("🟣", i)
-    //        }
-    //    }
+    //    Sync Thread -- high priority
+    queue.sync {
+        for i in 50..<60 {
+            print("🟣", i)
+        }
+    }
     
-    // Async Thread -- low priority
+    //    Async Thread -- low priority
     queue.async {
         for i in 0..<10 {
             print("🔴", i)
         }
     }
     
-    // Main Thread
+    //    Main Thread
     for i in 100..<110 {
         print("Ⓜ️", i)
     }
 }
-// simpleQueues()
+simpleQueues()
 
 
 
@@ -165,7 +165,7 @@ func concurrentQueues() {
  */
 
 func concurrentQueuesWithInactiveQueue() {
-//    let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .utility, attributes: .initiallyInactive)
+    //    let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .utility, attributes: .initiallyInactive)
     
     let anotherQueue = DispatchQueue(label: "com.appcode.anotherQueue", qos: .userInitiated, attributes: [.concurrent, .initiallyInactive])
     let inactiveQueue = anotherQueue
@@ -205,15 +205,15 @@ func concurrentQueuesWithInactiveQueue() {
  
  Indeed, the task of the dispatch queue was executed two seconds later. Note that there’s an alternative to specify the waiting time. If you don’t want to use any of the predefined methods mentioned above, you can directly add a Double value to the current time:
  delayQueue.asyncAfter(deadline: .now() + 0.75) {
-     print(Date())
+ print(Date())
  }
-*/
+ */
 
 func queueWithDelay() {
     let delayQueue = DispatchQueue(label: "com.appcoda.delayqueue", qos: .userInitiated)
-
+    
     print(Date())
-
+    
     let additionalTime: DispatchTimeInterval = .seconds(2)
     
     delayQueue.asyncAfter(deadline: .now() + additionalTime) {
@@ -234,18 +234,18 @@ func queueWithDelay() {
  
  You can use it as any other queue we’ve seen so far:
  globalQueue.async {
-     for-in loop {
-         print("🔴", i)
-     }
+ for-in loop {
+ print("🔴", i)
+ }
  }
  There are not many properties that you can change when using global queues. However, you can specify the Quality of Service class that you want to be used:
  let globalQueue = DispatchQueue.global(qos: .userInitiated)
  If you don’t specify a QoS class (like we did in the first case), then the default case is used by default.
  
  Using or not global queues, it’s almost out of the question the fact that you’ll need to access the main queue quite often; most probably to update the UI. Accessing the main queue from any other queue is simple as shown in the next snippet, and upon call you specify if it’s a synchronous or an asynchronous execution:
-
+ 
  DispatchQueue.main.async {
-     // Do something
+ // Do something
  } // need most of the times
  
  fetchImage() - Xcode proj
@@ -257,23 +257,23 @@ func queueWithDelay() {
  
  Now, let’s change that problematic behaviour -- add
  DispatchQueue.main.async {
-     // Do something
+ // Do something
  }
  
  Run the app again, and see that the image view gets its image this time right after it gets downloaded. The main queue was really invoked and updated our UI.
-*/
+ */
 
 
 
 // MARK:- Step 6 (DispatchWorkItem)
 /*:
  Using DispatchWorkItem Objects
-
+ 
  A DispatchWorkItem is a block of code that can be dispatched on any queue and therefore the contained code to be executed on a background, or the main thread. Think of it really simply; as a bunch of code that you just invoke, instead of writing the code blocks in the way we’ve seen in the previous parts.
-
+ 
  The simplest way to use such a work item is illustrated right below:
  let workItem = DispatchWorkItem {
-     // Do something
+ // Do something
  }
  
  Let’s see a small example to understand how DispatchWorkItem objects are used.
@@ -285,7 +285,7 @@ func queueWithDelay() {
  Let’s see the following example:
  let queue = DispatchQueue.global()
  queue.async {
-     workItem.perform()
+ workItem.perform()
  }
  
  This will also perfectly work. However, there’s a faster way to dispatch a work item like that one; The DispatchQueue class provides a convenient method for that purpose:
@@ -293,14 +293,14 @@ func queueWithDelay() {
  
  When a work item is dispatched, you can notify your main queue (or any other queue if you want) about that as shown next:
  workItem.notify(queue: DispatchQueue.main) {
-     print("value = ", value)
+ print("value = ", value)
  }
  
  
-*/
+ */
 func useWorkItem() {
     var value = 10
- 
+    
     let workItem = DispatchWorkItem {
         value += 5
     }
@@ -312,5 +312,5 @@ func useWorkItem() {
         print("Value \(value)")
     }
 }
- useWorkItem()
+useWorkItem()
 
