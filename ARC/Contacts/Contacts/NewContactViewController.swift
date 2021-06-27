@@ -1,6 +1,6 @@
 import UIKit
 
-protocol NewContactViewControllerDelegate: class {
+protocol NewContactViewControllerDelegate: AnyObject {
   func newContactViewController(_ newContactViewController: NewContactViewController, created: Contact)
   func newContactViewControllerDidCancel(_ newContactViewController: NewContactViewController)
 }

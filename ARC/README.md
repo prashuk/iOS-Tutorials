@@ -10,8 +10,6 @@ With an understanding of this system, you can influence when the **life of a hea
 
 ARC works automatically, so you don’t need to participate in reference counting, but you do need to **consider relationships between objects to avoid memory leaks**. This is an important requirement that is often overlooked by new developers.
 
--- Code --
-
 ### An Object’s Lifetime
 
 1. ***Allocation***: Takes memory from a stack or heap.
@@ -63,9 +61,9 @@ There is another reference modifier you can use that doesn’t increase the refe
 
 Unowned references, by contrast, are never optional types. If you try to access an unowned property that refers to a deinitialized object, you’ll trigger a runtime error comparable to force unwrapping a `nil` optional type.
 
-![Table](https://koenig-media.raywenderlich.com/uploads/2016/05/Table-480x227.png)
+Because a weak reference can be set to `nil`, it is always declared as an optional. That is the second difference between weak and unowned references. The value of a weak reference needs to be unwrapped before it can be accessed whereas you can directly access the value of an unowned reference.
 
--- Code --
+![Table](https://koenig-media.raywenderlich.com/uploads/2016/05/Table-480x227.png)
 
 ## Reference Cycles With Closures
 
@@ -89,7 +87,7 @@ let someClosure = { [x] in
 x = 6
 y = 6
 
-someClosure()        // Prints 5, 6
+someClosure()        // Prints 6, 6
 print("\(x), \(y)")  // Prints 6, 6
 ```
 
@@ -97,13 +95,11 @@ print("\(x), \(y)")  // Prints 6, 6
 
 `y` is not in the capture list, and is instead ***captured by reference***. This means that `y` will be whatever it is when the closure runs, rather than what it was at the point of capture.
 
-Capture lists come in handy for defining a `weak` or `unowned` relationship between objects used in a closure. In this case, `unowned` is a good fit, since the closure cannot exist if the instance of `CarrierSubscription` has gone away. (See xcode)
+Capture lists come in handy for defining a `weak` or `unowned` relationship between objects used in a closure. In this case, `unowned` is a good fit, since the closure cannot exist if the instance of has gone away.
 
 ### Using Unowned With Care
 
 If you are sure that a referenced object from a closure will never deallocate, you can use `unowned`. However, if it does deallocate, you are in trouble.
-
--- Code --
 
 ```swift
 lazy var greetingMaker: () -> String = { [weak self] in
@@ -117,21 +113,6 @@ lazy var greetingMaker: () -> String = { [weak self] in
 The guard statement binds `self` from `weak self`. If `self` is `nil`, the closure returns *“No greeting available.”*
 
 On the other hand, if `self` is not `nil`, it makes `self` a strong reference, so the object is *guaranteed* to live until the end of the closure.
-
-## Contacts - Xcode Project
-
-[Apple’s Documentation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html) recommends that a *parent* object should have a strong hold on a *child* object by convention — not the other way around. This means that giving `Contact` a strong hold on a `Number`, and `Number` an unowned reference to a `Contact`, is the most convenient solution:
-
-```swift
-class Number {
-  unowned var contact: Contact
-  // Other code...
-}
-class Contact {
-  var number: Number?
-  // Other code...
-}
-```
 
 ## Cycles With Value Types and Reference Types
 
@@ -158,5 +139,3 @@ class Node {
 ```
 
 Self reference is not an issue for classes (i.e. reference types), so the compiler error disappears.
-
--- Code --
