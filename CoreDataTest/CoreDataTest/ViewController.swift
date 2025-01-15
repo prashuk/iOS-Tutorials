@@ -69,14 +69,14 @@ class ViewController: UITableViewController {
         let alert = UIAlertController(title: "Edit Person", message: "Enter Name", preferredStyle: .alert)
         alert.addTextField(configurationHandler: .none)
         
-        let textFeild = alert.textFields![0]
-        textFeild.text = selectedPerson.name
+        let textField = alert.textFields![0]
+        textField.text = selectedPerson.name
         
         let saveButton = UIAlertAction(title: "Save", style: .default) { (action) in
             
             // Edit Person Core Data
-            let textFeild = alert.textFields![0]
-            selectedPerson.name = textFeild.text
+            let textField = alert.textFields![0]
+            selectedPerson.name = textField.text
             
             do {
                 try self.context.save()
@@ -96,11 +96,11 @@ class ViewController: UITableViewController {
         alert.addTextField(configurationHandler: .none)
         
         let submitButton = UIAlertAction(title: "Add", style: .default) { (action) in
-            let textFeild = alert.textFields![0]
+            let textField = alert.textFields![0]
         
             // Create new object
             let newPerson = Person(context: self.context)
-            newPerson.name = textFeild.text
+            newPerson.name = textField.text
             newPerson.gender = "Male"
             newPerson.age = 25
             

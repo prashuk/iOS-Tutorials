@@ -17,7 +17,7 @@ class EmployeeViewModel: NSObject {
         }
     }
     
-    var bindEmployeeViewModelToController : (() -> ()) = {}
+    var bindEmployeeViewModelToController: (() -> ()) = {}
             
     override init() {
         super.init()

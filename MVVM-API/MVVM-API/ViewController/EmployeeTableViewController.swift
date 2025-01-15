@@ -30,10 +30,6 @@ extension EmployeeTableViewController {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.employees.count
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let item = self.employees[indexPath.row]
@@ -61,10 +57,10 @@ extension UIImageView {
                 print(error ?? "No Error")
                 return
             }
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async {
                 let image = UIImage(data: data!)
                 self.image = image
-            })
+            }
         }.resume()
     }
 }
