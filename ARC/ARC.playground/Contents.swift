@@ -1,5 +1,6 @@
 import Foundation
 
+// ARC in classes, properties
 class Person {
     var name: String
     var mobile: Mobile?
@@ -43,17 +44,17 @@ func assignProperties() {
     mobile?.owner = person
     
     person = nil
-    
-    print(mobile?.owner)
-    
     mobile = nil
 }
 
 createObjects()
 assignProperties()
+
 // by calling this function deinit doesn't called for both the classes but if we make weak any one of the property of mobile or person, deinit will called
 // by convention, make weak that variable which is less important
 
+
+// ARC in Closure
 /*
  class Demo {
     var x = 5
@@ -62,13 +63,13 @@ assignProperties()
         print("x: \(self.x)")
     }
  }
+ 
+ let demo = Demo()
+ demo.increase(2)
 */
 
-
-let demo = Demo()
-demo.increase(2)
 // demo points to closure and closure points back to self so leak occurs
-// So add self to weak as capture list in the closure - lazy var increase: (Int) -> Void = { [weak self] by in
+// So add self to weak as capture list in the closure
 // Every where in the closure
 
 class Demo {

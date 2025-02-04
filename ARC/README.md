@@ -65,6 +65,27 @@ Because a weak reference can be set to `nil`, it is always declared as an option
 
 ![Table](https://koenig-media.raywenderlich.com/uploads/2016/05/Table-480x227.png)
 
+```swift
+class A {
+    weak var a: A?
+//    weak let b: A? // error - It should be var
+//    weak var c: A // error - It should be nil
+}
+// W O V (wow)
+
+class B {
+//    unowned var a: A? // runtime error - unwrapping nil
+    unowned let b: A
+    unowned var c: A
+    
+    init(b: A, c: A) {
+        self.b = b
+        self.c = c
+    }
+}
+// U V L NO (UV Light -> NO)
+```
+
 ## Reference Cycles With Closures
 
 Reference cycles for objects occur when properties reference each other. Like objects, closures are also reference types and can cause cycles. Closures ***capture***, or close over, the objects they operate on.
@@ -78,17 +99,20 @@ For example, if you assign a closure to a property of a class, and that closure 
 Swift has a simple, elegant way to **break strong reference cycles in closures**. You declare a ***capture list*** in which you define the relationships between the closure and the objects it captures.
 
 ```swift
-var x = 5
-var y = 5
-
+var x = 5, y = 5
 let someClosure = { [x] in
-  print("\(x), \(y)")
+  print("Value inside closure x: \(x), y: \(y)")
 }
-x = 6
-y = 6
+x = 6; y = 6
 
-someClosure()        // Prints 6, 6
-print("\(x), \(y)")  // Prints 6, 6
+someClosure()
+print("Value after closure x: \(x), y: \(y)")
+```
+
+```swift
+Output:
+Value inside closure x: 5, y: 6
+Value after closure x: 6, y: 6
 ```
 
 `x` is in the closure capture list, so you copy `x` at the definition point of the closure. It’s ***captured by value***.

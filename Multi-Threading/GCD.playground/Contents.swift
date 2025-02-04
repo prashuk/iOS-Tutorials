@@ -1,8 +1,9 @@
+import Foundation
 import UIKit
 // MARK:- Step 1 (Simple Queue)
 /*:
  In Swift 3, the simplest way to create a new dispatch queue is the following:
- let queue = DispatchQueue(label: "com.appcoda.myqueue")
+ let queue = DispatchQueue(label: "com.prashuk.myqueue")
  
  Once the queue is created, then we can execute code with it, either synchronously using a method called sync, or asynchronously using a method called async.
  
@@ -20,31 +21,29 @@ import UIKit
  
  Even though the above examples are quite simple, it shows perfectly clear how a program behaves with queues running synchronously and asynchronously.
  */
-
 func simpleQueues() {
-    // Custom Queue
     let queue = DispatchQueue(label: "com.prashuk.myqueue")
     
-    //    Sync Thread -- high priority
+    // Sync Thread -- high priority
     queue.sync {
         for i in 50..<60 {
             print("🟣", i)
         }
     }
     
-    //    Async Thread -- low priority
+    // Async Thread -- low priority
     queue.async {
         for i in 0..<10 {
             print("🔴", i)
         }
     }
     
-    //    Main Thread
+    // Main Thread
     for i in 100..<110 {
         print("Ⓜ️", i)
     }
 }
-simpleQueues()
+//simpleQueues()
 
 
 
@@ -57,12 +56,7 @@ simpleQueues()
  That information regarding the importance and priority of the tasks is called in GCD Quality of Service (QoS). In truth, QoS is an enum with specific cases, and by providing the proper QoS value upon the queue initialisation you specify the desired priority. If no QoS is defined, then a default priority is given by to the queue.
  
  The following list summarises the available QoS cases, also called QoS classes. The first class means the highest priority, the last one the lowest priority:
- userInteractive
- userInitiated
- default
- utility
- background
- unspecified
+ userInteractive -> userInitiated -> default -> utility -> background -> unspecified
  
  Back to our project now, we’re going to work on the queuesWithQoS().
  
@@ -84,17 +78,10 @@ simpleQueues()
  
  Once again, we see that the main queue has a high priority by default, and the queue1 dispatch queue is executed in parallel to the main one. The queue2 finishes last and doesn’t get many opportunities in execution while the tasks of the other two queues are being executed, as it has the lowest priority.
  */
-
 func queuesWithQoS() {
-    // Custom Queue with same priority
     let queue1 = DispatchQueue(label: "com.prashuk.q1", qos: .userInitiated)
-    //    let queue2 = DispatchQueue(label: "com.prashuk.q2", qos: .userInitiated)
+    let queue2 = DispatchQueue(label: "com.prashuk.q2", qos: .background)
     
-    let queue2 = DispatchQueue(label: "com.prashuk.q2", qos: .utility)
-    
-    //    let queue1 = DispatchQueue(label: "com.prashuk.q1", qos: .background)
-    
-    // Asyn Call for both queues
     queue1.async {
         for i in 50..<60 {
             print("🟢", i)
@@ -111,7 +98,7 @@ func queuesWithQoS() {
         print("Ⓜ️", i)
     }
 }
-// queuesWithQoS()
+//queuesWithQoS()
 
 
 
@@ -129,11 +116,8 @@ func queuesWithQoS() {
  
  Note that by changing the QoS class the execution of the tasks is affected as well. However, as long as you initialise the queue as a concurrent one, then the parallel execution of the tasks will be respected, and all of them they’ll get their time to run.
  */
-
 func concurrentQueues() {
-    //    let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .utility)
-    
-    let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .utility, attributes: .concurrent)
+    let anotherQueue = DispatchQueue(label: "com.prashuk.anotherQueue", qos: .utility, attributes: .concurrent)
     
     anotherQueue.async {
         for i in 0..<10 {
@@ -151,7 +135,7 @@ func concurrentQueues() {
         }
     }
 }
-// concurrentQueues()
+//concurrentQueues()
 
 
 
@@ -161,34 +145,31 @@ func concurrentQueues() {
  
  The activate() method of the DispatchQueue class will make the tasks run. Note that as the queue has not been marked as a concurrent one, they’ll run in a serial order.
  
- The question now is, how can we have a concurrent queue while it’s initially inactive? Simply, we provide an array with both values, instead of providing a single value as the argument for the attributes parameter: let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .userInitiated, attributes: [.concurrent, .initiallyInactive])
+ The question now is, how can we have a concurrent queue while it’s initially inactive? Simply, we provide an array with both values, instead of providing a single value as the argument for the attributes parameter: let anotherQueue = DispatchQueue(label: "com.prashuk.anotherQueue2", qos: .userInitiated, attributes: [.concurrent, .initiallyInactive])
  */
-
 func concurrentQueuesWithInactiveQueue() {
-    //    let anotherQueue = DispatchQueue(label: "com.appcoda.anotherQueue", qos: .utility, attributes: .initiallyInactive)
-    
-    let anotherQueue = DispatchQueue(label: "com.appcode.anotherQueue", qos: .userInitiated, attributes: [.concurrent, .initiallyInactive])
-    let inactiveQueue = anotherQueue
+    let anotherQueue2 = DispatchQueue(label: "com.prashuk.anotherQueue2", qos: .userInitiated, attributes: [.concurrent, .initiallyInactive])
+    let inactiveQueue = anotherQueue2
     
     inactiveQueue.activate()
     
-    anotherQueue.async {
+    anotherQueue2.async {
         for i in 0..<10 {
             print("🔴", i)
         }
     }
-    anotherQueue.async {
+    anotherQueue2.async {
         for i in 100..<110 {
             print("🔵", i)
         }
     }
-    anotherQueue.async {
+    anotherQueue2.async {
         for i in 1000..<1010 {
             print("⚪️", i)
         }
     }
 }
-// concurrentQueuesWithInactiveQueue()
+//concurrentQueuesWithInactiveQueue()
 
 
 
@@ -208,9 +189,8 @@ func concurrentQueuesWithInactiveQueue() {
  print(Date())
  }
  */
-
 func queueWithDelay() {
-    let delayQueue = DispatchQueue(label: "com.appcoda.delayqueue", qos: .userInitiated)
+    let delayQueue = DispatchQueue(label: "com.prashuk.delayqueue", qos: .userInitiated)
     
     print(Date())
     
@@ -220,7 +200,7 @@ func queueWithDelay() {
         print(Date())
     }
 }
-// queueWithDelay()
+//queueWithDelay()
 
 
 
@@ -233,35 +213,61 @@ func queueWithDelay() {
  Accessing a global queue is as simple as that: let globalQueue = DispatchQueue.global()
  
  You can use it as any other queue we’ve seen so far:
+ 
+ ```swift
  globalQueue.async {
- for-in loop {
- print("🔴", i)
+    for-in loop {
+        print("🔴", i)
+    }
  }
- }
+ ```
+ 
  There are not many properties that you can change when using global queues. However, you can specify the Quality of Service class that you want to be used:
  let globalQueue = DispatchQueue.global(qos: .userInitiated)
  If you don’t specify a QoS class (like we did in the first case), then the default case is used by default.
  
  Using or not global queues, it’s almost out of the question the fact that you’ll need to access the main queue quite often; most probably to update the UI. Accessing the main queue from any other queue is simple as shown in the next snippet, and upon call you specify if it’s a synchronous or an asynchronous execution:
  
+ 
+ ```swift
  DispatchQueue.main.async {
- // Do something
+    // Do something
  } // need most of the times
+ ```
  
- fetchImage() - Xcode proj
- We’ll go to the fetchImage() method, and we’ll the required code to download the Appcoda logo and show it on the image view. The following code does that think exactly (I won’t discuss anything at this point about the URLSession class and how it’s used):
+ fetchImage() - below function
  
- Notice that we are not actually updating the UI on the main queue, instead we’re trying to do so on the background thread that the completion handler block of the dataTask(...) method runs to. Compile and run the app now and see what happens (don’t forget to make a call to the fetchImage() method):
+ Notice that we are not actually updating the UI on the main queue, instead we’re trying to do so on the background thread that the completion handler block of the dataTask(...) method runs to.
  
  Even though we get the information that the image has been downloaded, we’re unable to see it in the image view because the UI has not been updated. Most probably, the image will be displayed several moments later after the initial message (something that is not guaranteed that will happen if other tasks are being executed in the app as well), but problems don’t stop there; you’ll also get a really long error log complaining about the UI updates made on a background thread.
  
- Now, let’s change that problematic behaviour -- add
+ Now, let’s change that problematic behavior
+ 
+ ```swift
  DispatchQueue.main.async {
- // Do something
+    // Do something
  }
+ ```
  
  Run the app again, and see that the image view gets its image this time right after it gets downloaded. The main queue was really invoked and updated our UI.
  */
+func fetchImage() {
+    var imageView = UIImageView()
+    
+    let imageURL: URL = URL(string: "https://picsum.photos/200")!
+    
+    (URLSession(configuration: URLSessionConfiguration.default)).dataTask(with: imageURL, completionHandler: { (imageData, response, error) in
+        
+        if let data = imageData {
+            print("Did download image data")
+            
+            DispatchQueue.main.async {
+                imageView.image = UIImage(data: data)
+            }
+        }
+    }).resume()
+}
+//fetchImage()
 
 
 
@@ -272,9 +278,12 @@ func queueWithDelay() {
  A DispatchWorkItem is a block of code that can be dispatched on any queue and therefore the contained code to be executed on a background, or the main thread. Think of it really simply; as a bunch of code that you just invoke, instead of writing the code blocks in the way we’ve seen in the previous parts.
  
  The simplest way to use such a work item is illustrated right below:
+ 
+ ```swift
  let workItem = DispatchWorkItem {
- // Do something
+    // Do something
  }
+ ```
  
  Let’s see a small example to understand how DispatchWorkItem objects are used.
  
@@ -283,19 +292,23 @@ func queueWithDelay() {
  That line will dispatch the work item on the main thread, but you can always use other queues as well.
  
  Let’s see the following example:
+ 
+ ```swift
  let queue = DispatchQueue.global()
  queue.async {
- workItem.perform()
+    workItem.perform()
  }
+ ```
  
- This will also perfectly work. However, there’s a faster way to dispatch a work item like that one; The DispatchQueue class provides a convenient method for that purpose:
- queue.async(execute: workItem)
+ This will also perfectly work. However, there’s a faster way to dispatch a work item like that one; The DispatchQueue class provides a convenient method for that purpose:  queue.async(execute: workItem)
  
  When a work item is dispatched, you can notify your main queue (or any other queue if you want) about that as shown next:
- workItem.notify(queue: DispatchQueue.main) {
- print("value = ", value)
- }
  
+ ```swift
+ workItem.notify(queue: DispatchQueue.main) {
+    print("value = ", value)
+ }
+ ```
  
  */
 func useWorkItem() {
@@ -313,4 +326,3 @@ func useWorkItem() {
     }
 }
 useWorkItem()
-
